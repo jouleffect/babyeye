@@ -8,7 +8,7 @@ By loading the model trained in the first part and saved in a specific file, the
 
 To run the training of some data set, you can type this command in your shell:
 
-#### sh trainer.sh [params]
+#### $ sh trainer.sh [params]
 
 the set of params of the command is:
 
