@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from tensorflow import keras
+from keras.utils.np_utils import to_categorical 
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 righe, colonne = 28,28
 n_classi = 10
