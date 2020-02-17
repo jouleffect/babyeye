@@ -1,6 +1,6 @@
  
 |________________________| HELP INPUT OPTIONS |________________________|
--h (--help)	show this help
+-h (--help)	shows this help
 -c (--class)	number of output classes	[default = -c 10]
 -n (--nets)	number of nets			[default = -n 5]
 -s (--shape)	number of image pixels		[default = -s 28x28]
