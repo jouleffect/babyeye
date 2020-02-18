@@ -1,19 +1,6 @@
 import pandas as pd 
 from keras.utils.np_utils import to_categorical 
 
-def preelab_csv_data(n_classi,righe,colonne):
-
-    train = pd.read_csv("../data/train.csv")
-
-    y_train = train["label"]
-    X_train = train.drop(labels = ["label"],axis = 1)
-    X_train = X_train / 255.0
-    X_train = X_train.values.reshape(-1,righe,colonne,1)
-    y_train = to_categorical(y_train, num_classes = n_classi)
-
-    return X_train, y_train
-
-
 def preelab_csv_data_test(n_classi,righe,colonne):
 
     test = pd.read_csv("../data/test.csv")
@@ -23,7 +10,7 @@ def preelab_csv_data_test(n_classi,righe,colonne):
     return test
 
 # DA MODIFICARE
-def preelab_img_data():
+def preelab_img_data_test():
     test = pd.read_csv("test.csv")
     train = pd.read_csv("train.csv")
 
