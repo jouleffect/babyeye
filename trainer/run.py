@@ -1,13 +1,14 @@
 import getopt, sys
 import numpy as np
 import pandas as pd 
-import clean
+import warnings 
+warnings.filterwarnings('ignore')
 
 parametri = sys.argv
 listaParametri = parametri[1:]
 
-opzioni = "c:n:s:b:e:h"
-opzioni_parola = ["help", "output=", "verbose"]
+opzioni = "c:s:h"
+opzioni_parola = ["help", "class=", "shape="]
 
 try:
     arguments, values = getopt.getopt(listaParametri, opzioni, opzioni_parola)
@@ -25,16 +26,8 @@ for argomento, valore in arguments:
     	sys.exit()
     elif argomento in ("-c", "--class"):
     	n_classi = valore
-    elif argomento in ("-n", "--nets"):
-    	nets = valore
     elif argomento in ("-s", "--shape"):
     	righe, colonne = valore,valore
-    elif argomento in ("-n", "--nets"):
-    	nets = valore
-    elif argomento in ("-b", "--batch"):
-    	batch = valore
-    elif argomento in ("-e", "--epochs"):
-    	epochs = valore
 
 print("=======================================================================================")
 print("-------------------------WELCOME TO THE BABYEYE TRAINER SCRIPT-------------------------")
@@ -44,33 +37,47 @@ try:
     print (("----------| Selected number of classes: (%s)") % (n_classi))
 except NameError:
     n_classi = 10
-    print (("----------| Number of nets not defined, using the default one: (%s)") % (n_classi))
-try:
-    nets
-    print (("----------| Selected number of nets: (%s)") % (nets))
-except NameError:
-    nets = 1
-    print (("----------| Number of nets not defined, using the default one: (%s)") % (nets))
+    print (("----------| Number of classes not defined, using the default one: (%s)") % (n_classi))
 try:
     righe
     print (("----------| Selected number of pixels: (%s)") % ([righe,colonne]))
 except NameError:
     righe, colonne = 28,28
     print (("----------| Number of pixels not defined, using the default one: (%s)") % ([righe,colonne]))
-try:
-    batch
-    print (("----------| Selected batch size: (%s)") % (batch))
-except NameError:
-    batch = 30
-    print (("----------| Batch size not defined, using the default one: (%s)") % (batch))
-try:
-    epochs
-    print (("----------| Selected number of epochs: (%s)") % (epochs))
-except NameError:
-    epochs = 20
-    print (("----------| Number of epochs not defined, using the default one: (%s)") % (epochs))
+
 print("=======================================================================================")
 
+print("=======================================================================================")
+print("I'm cleaning the data...")
 
-### PULIZIA DEL FILE ###
-clean.preelab_csv_data(n_classi,righe,colonne,nets,batch,epochs)
+import clean
+X_train, y_train = clean.preelab_csv_data(n_classi,righe,colonne)
+
+print("Data Augmentation..")
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+datagen = ImageDataGenerator(
+            rotation_range=10,  
+            zoom_range = 0.10,  
+            width_shift_range=0.1, 
+            height_shift_range=0.1)
+
+show = input("Data succesfully cleaned. Do you want to visualize them?")
+
+mod = input("Do you want to create the model?")
+if mod =='Y' or mod == 'y':
+    import modello
+    m, nets = modello.crea_modello(righe,colonne,n_classi)
+
+    tr = input("Model created! Do you want to train it?")
+    if tr =='Y' or tr == 'y':
+        import trainer
+        trainer.train_1(X_train,y_train,m,nets,datagen)
+
+        salva = input("Do you want to save the trained model?")
+        if salva =='Y' or salva == 'y':
+            import save
+            save.save_model(m,nets)
+            print("Model succesfully saved!")
+
+print("==================================GOODBYE========================================")   
