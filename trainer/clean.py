@@ -1,46 +1,45 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from tensorflow import keras
+import pandas as pd 
 from keras.utils.np_utils import to_categorical 
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-righe, colonne = 28,28
-n_classi = 10
+def preelab_csv_data(n_classi,righe,colonne):
 
-test = pd.read_csv("test.csv")
-train = pd.read_csv("train.csv")
+    train = pd.read_csv("data/train.csv")
 
-y_train = train["label"]
-X_train = train.drop(labels = ["label"],axis = 1)
+    y_train = train["label"]
+    X_train = train.drop(labels = ["label"],axis = 1)
+    X_train = X_train / 255.0
+    X_train = X_train.values.reshape(-1,righe,colonne,1)
+    y_train = to_categorical(y_train, num_classes = n_classi)
 
-#------Normalizzazione-----#
-X_train = X_train / 255.0
-test = test / 255.0
-
-#-----Ridimensionamento----#
-X_train = X_train.values.reshape(-1,righe,colonne,1)
-test = test.values.reshape(-1,righe,colonne,1)
-#-------Label encoding-------#
-y_train = to_categorical(y_train, num_classes = n_classi)
+    return X_train, y_train
 
 
-#-------Immagini di esempio---------------#
-plt.figure(figsize=(15,4.5))
-for i in range(30):  
-    plt.subplot(3, 10, i+1)
-    plt.imshow(X_train[i].reshape((righe,colonne)),cmap=plt.cm.binary)
-    plt.axis('off')
-plt.subplots_adjust(wspace=-0.1, hspace=-0.1)
-plt.show()
+def preelab_csv_data_test(n_classi,righe,colonne,nets,batch,epochs):
+
+    test = pd.read_csv("data/test.csv")
+    test = test / 255.0
+    test = test.values.reshape(-1,righe,colonne,1)
+    
+    return test
+
+# DA MODIFICARE
+def preelab_img_data():
+    test = pd.read_csv("test.csv")
+    train = pd.read_csv("train.csv")
+
+    y_train = train["label"]
+    X_train = train.drop(labels = ["label"],axis = 1)
+    X_train = X_train / 255.0
+    test = test / 255.0
+    X_train = X_train.values.reshape(-1,righe,colonne,1)
+    test = test.values.reshape(-1,righe,colonne,1)
+    y_train = to_categorical(y_train, num_classes = n_classi)
 
 
-#-------Aumento dei dati---------------#
-datagen = ImageDataGenerator(
-        rotation_range=10,  
-        zoom_range = 0.10,  
-        width_shift_range=0.1, 
-        height_shift_range=0.1)
-
+    datagen = ImageDataGenerator(
+            rotation_range=10,  
+            zoom_range = 0.10,  
+            width_shift_range=0.1, 
+            height_shift_range=0.1)
 
 
