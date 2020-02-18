@@ -54,7 +54,7 @@ import clean
 X_train, y_train = clean.preelab_csv_data(n_classi,righe,colonne)
 
 print("Data Augmentation..")
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator
 
 datagen = ImageDataGenerator(
             rotation_range=10,  
@@ -62,19 +62,21 @@ datagen = ImageDataGenerator(
             width_shift_range=0.1, 
             height_shift_range=0.1)
 
-show = input("Data succesfully cleaned. Do you want to visualize them?")
-
-mod = input("Do you want to create the model?")
+s = raw_input("Data succesfully cleaned. Do you want to visualize them?")
+if s == 'Y' or s == 'y':
+    import show
+    show.show_data(X_train,y_train,datagen)
+mod = raw_input("Do you want to create the model?")
 if mod =='Y' or mod == 'y':
     import modello
     m, nets = modello.crea_modello(righe,colonne,n_classi)
 
-    tr = input("Model created! Do you want to train it?")
+    tr = raw_input("Model created! Do you want to train it?")
     if tr =='Y' or tr == 'y':
         import trainer
         trainer.train_1(X_train,y_train,m,nets,datagen)
 
-        salva = input("Do you want to save the trained model?")
+        salva = raw_input("Do you want to save the trained model?")
         if salva =='Y' or salva == 'y':
             import save
             save.save_model(m,nets)
