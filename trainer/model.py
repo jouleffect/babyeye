@@ -1,10 +1,18 @@
+import sys
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, Dropout, MaxPool2D
+from tensorflow.keras.models import load_model
+import warnings 
+warnings.filterwarnings('ignore')
 
-nets = 7
-model = [0] *nets
+def crea_modello(righe,colonne,n_classi):
+  
+  nets = input("-------| NUMBER OF NETS -------> ")
+  nets = int(nets)
 
-for i in range(nets):
+  model = [0] *nets
+
+  for i in range(nets):
     model[i] = Sequential()
     model[i].add(Conv2D(filters = 32, kernel_size = (5,5),padding = 'Same', 
                  activation ='relu', input_shape = (righe,colonne,1)))
@@ -26,3 +34,5 @@ for i in range(nets):
     model[i].compile(loss="categorical_crossentropy",
               optimizer='adam',
               metrics=['accuracy'])
+
+  return model, nets
