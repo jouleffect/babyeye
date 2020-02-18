@@ -3,7 +3,7 @@ from keras.utils.np_utils import to_categorical
 
 def preelab_csv_data(n_classi,righe,colonne):
 
-    train = pd.read_csv("data/train.csv")
+    train = pd.read_csv("../data/train.csv")
 
     y_train = train["label"]
     X_train = train.drop(labels = ["label"],axis = 1)
@@ -16,7 +16,7 @@ def preelab_csv_data(n_classi,righe,colonne):
 
 def preelab_csv_data_test(n_classi,righe,colonne,nets,batch,epochs):
 
-    test = pd.read_csv("data/test.csv")
+    test = pd.read_csv("../data/test.csv")
     test = test / 255.0
     test = test.values.reshape(-1,righe,colonne,1)
     
