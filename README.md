@@ -20,21 +20,13 @@ the set of params of the command is:
 
 -h help
 
--i the img files path
-
 -s pixels of the images (rows and columns)
 
 -c classes of predictions
 
--b batch_size
-
--e epochs
-
--n number of nets
-
 ## Example:
 
-#### $ python run.py -c 10 -b 64 -e 10 -n 20
+#### $ python run.py -c 10
 
 Instead, to test an image, type this command in your shell:
 
@@ -43,5 +35,7 @@ Instead, to test an image, type this command in your shell:
 the set of params of the command is:
 
 -h help
+
+-s pixels of the images (rows and columns)
 
 -c classes of predictions
